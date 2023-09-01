@@ -91,7 +91,7 @@ d2014p5 :: String -> Bool -- ≡∘⌽⍨∩⍥⎕C∘⎕A
 d2014p5 = (==) <*> reverse . filter (`elem` ['a'..'z'])
 
 d2014p6 :: [Int] -> [Int] -- {,∘≢⌸,+/¨⍳⍵}
-d2014p6 x = map length (group (sort (map sum (helper x))))
+d2014p6 x = group (sort (helper x <&> sum)) <&> length
     where
         helper [] = [[]]
         helper (x:xs) = [y:ys | y <- [1..x], ys <- helper xs]
@@ -108,3 +108,9 @@ d2014p9 vel traj = vel^2 * sin (2 * traj) / 9.81
 d2014p10 :: (Floating a, Ord a) => [a] -> a -- 100×⌈⌿(¯2-⌿⍵)÷¯1↓⍵
 d2014p10 vec = 100 * maximum (zipWith (/) (chunksOf 2 vec <&> (\[a, b] -> b - a)) (init vec))
 
+-- Dyalog APL Competition: 2015, Phase 1.
+d2015p1 :: String -> String -> Bool
+d2015p1 = (==) `on` sort . filter (`elem` ['a'..'z'])
+
+d2015p2 :: (Num a, Ord a) => [a] -> Int -- {⌈/≢¨⊆⍨0<¯2-/⍵}
+d2015p2 x = maximum (filter head (group (True : zipWith (<) x (tail x))) <&> length)
